@@ -12,7 +12,14 @@ const MouseTracker: React.FC<MouseTrackerProps> = ({ render }) => {
   };
 
   return (
-    <div onMouseMove={handleMouseMove} style={{ height: "100vh" }}>
+    <div
+      onMouseMove={handleMouseMove}
+      style={{
+        height: "200px",
+        background: "#f0f0f0",
+        border: "1px solid #ccc",
+      }}
+    >
       {render(position)}
     </div>
   );
