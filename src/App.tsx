@@ -1,6 +1,7 @@
 //import "./App.css";
 import Counter from "./components/render-props/Counter";
 import Dropdown from "./components/render-props/DropdownBasic/Dropdown";
+import DropdownWrapper from "./components/render-props/DropdownBestPractice/DropdownWrapper";
 import MouseTracker from "./components/render-props/MouseTracker";
 import Toggle from "./components/render-props/Toggle";
 // import withAuth from "./components/hoc/withAuth";
@@ -156,6 +157,19 @@ function App() {
             </div>
           )}
         />
+      </div>
+
+      <div>
+        <h1>Render Prop Example: Dropdowns Best Practice</h1>
+
+        {/* Checkbox Dropdown */}
+        <DropdownWrapper options={options} type="checkbox" />
+
+        {/* Normal Dropdown with MultiSelect Enabled */}
+        <DropdownWrapper options={options} type="normal" multiSelect={true} />
+
+        {/* Normal Dropdown without MultiSelect */}
+        <DropdownWrapper options={options} type="normal" multiSelect={false} />
       </div>
       {/* Protected Route (HOC) */}
       {/* <ProtectedDashboard /> */}
