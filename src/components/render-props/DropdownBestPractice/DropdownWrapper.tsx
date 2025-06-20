@@ -54,7 +54,7 @@ const DropdownWrapper: React.FC<DropdownWrapperProps> = ({
             {type === "checkbox" ? (
               <p>Selected Items (Checkbox): {selectedItems.join(", ")}</p>
             ) : (
-              <p>Selected Item (Normal): {selectedItems[0]}</p>
+              <p>Selected Item (Normal): {selectedItems.join(", ")}</p>
             )}
           </div>
         </div>
