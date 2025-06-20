@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 
 interface DropdownProps {
-  options: string[];
+  options: string[] | { group: string; options: string[] }[];
   type: "checkbox" | "normal"; // Type to decide whether to render a checkbox list or normal list
   multiSelect?: boolean; // For enabling/disabling multi-select in normal dropdown
   render: (
     isOpen: boolean,
     toggleDropdown: () => void,
-    selectedItems: string[],
-    toggleSelect: (item: string) => void,
-    options: string[]
+    selectedItems: { [key: string]: string[] },
+    toggleSelect: (item: string, group: string) => void,
+    options: string[] | { group: string; options: string[] }[]
   ) => React.ReactNode;
 }
 
@@ -20,33 +20,58 @@ const Dropdown: React.FC<DropdownProps> = ({
   render,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
+  // selectedItems is now an object where each key is the group name and the value is an array of selected items in that group
+  const [selectedItems, setSelectedItems] = useState<{
+    [key: string]: string[];
+  }>({});
 
   const toggleDropdown = () => setIsOpen((prev) => !prev);
 
-  const toggleSelect = (item: string) => {
+  const toggleSelect = (item: string, group: string) => {
+    // If it's a checkbox dropdown, allow multiple selections for each group
     if (type === "checkbox") {
-      // For checkbox dropdown, allow multiple selections
-      setSelectedItems((prevSelected) =>
-        prevSelected.includes(item)
-          ? prevSelected.filter((selectedItem) => selectedItem !== item)
-          : [...prevSelected, item]
-      );
+      setSelectedItems((prevSelected) => {
+        const groupSelected = prevSelected[group] || [];
+        if (groupSelected.includes(item)) {
+          return {
+            ...prevSelected,
+            [group]: groupSelected.filter(
+              (selectedItem) => selectedItem !== item
+            ),
+          };
+        } else {
+          return {
+            ...prevSelected,
+            [group]: [...groupSelected, item],
+          };
+        }
+      });
     } else {
-      // For normal dropdown
+      // For normal dropdown, allow single selection (or multi-select depending on the multiSelect prop)
       if (multiSelect) {
-        // If multiSelect is true, allow multiple selections
         setSelectedItems((prevSelected) => {
-          // Add item if not already selected, remove if it is selected
-          if (prevSelected.includes(item)) {
-            return prevSelected.filter((selectedItem) => selectedItem !== item);
+          const groupSelected = prevSelected[group] || [];
+          if (groupSelected.includes(item)) {
+            return {
+              ...prevSelected,
+              [group]: groupSelected.filter(
+                (selectedItem) => selectedItem !== item
+              ),
+            };
           } else {
-            return [...prevSelected, item];
+            return {
+              ...prevSelected,
+              [group]: [...groupSelected, item],
+            };
           }
         });
       } else {
-        // If multiSelect is false, allow only one selection
-        setSelectedItems([item]);
+        // Only one selection per group
+        setSelectedItems((prevSelected) => ({
+          ...prevSelected,
+          [group]: [item],
+        }));
       }
     }
   };
