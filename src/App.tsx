@@ -17,6 +17,20 @@ import Toggle from "./components/render-props/Toggle";
 function App() {
   // const [text, setText] = useState("");
   const options = ["Option 1", "Option 2", "Option 3", "Option 4"];
+
+  const optionsNoGroup = ["Option 1", "Option 2", "Option 3", "Option 4"];
+
+  const optionsWithGroup = [
+    {
+      group: "Group 1",
+      options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+    },
+    {
+      group: "Group 2",
+      options: ["Option 1", "Option 2", "Option 3", "Option 4"],
+    },
+    { group: "Group 3", options: ["Option 1", "Option 2"] },
+  ];
   return (
     <div>
       <h1>React Design Patterns Demo</h1>
@@ -160,16 +174,30 @@ function App() {
       </div>
 
       <div>
-        <h1>Render Prop Example: Dropdowns Best Practice</h1>
+        <h1>
+          Render Prop Example: Dropdown with Grouping and Separate Selections
+        </h1>
 
-        {/* Checkbox Dropdown */}
-        <DropdownWrapper options={options} type="checkbox" />
+        <h4> No Grouping Dropdown </h4>
+        <DropdownWrapper options={optionsNoGroup} type="checkbox" />
 
-        {/* Normal Dropdown with MultiSelect Enabled */}
-        <DropdownWrapper options={options} type="normal" multiSelect={true} />
+        <h4> Grouped Dropdown </h4>
+        <DropdownWrapper options={optionsWithGroup} type="checkbox" />
+        <hr />
+        <h4>Normal - No MultiSelect - No Grouping</h4>
+        <DropdownWrapper
+          options={optionsNoGroup}
+          type="normal"
+          multiSelect={false}
+        />
+        <hr />
 
-        {/* Normal Dropdown without MultiSelect */}
-        <DropdownWrapper options={options} type="normal" multiSelect={false} />
+        <h4>Normal - MultiSelect - Grouping</h4>
+        <DropdownWrapper
+          options={optionsWithGroup}
+          type="normal"
+          multiSelect={true}
+        />
       </div>
       {/* Protected Route (HOC) */}
       {/* <ProtectedDashboard /> */}
