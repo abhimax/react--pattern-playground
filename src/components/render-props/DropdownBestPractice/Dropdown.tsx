@@ -36,11 +36,14 @@ const Dropdown: React.FC<DropdownProps> = ({
       // For normal dropdown
       if (multiSelect) {
         // If multiSelect is true, allow multiple selections
-        setSelectedItems((prevSelected) =>
-          prevSelected.includes(item)
-            ? prevSelected.filter((selectedItem) => selectedItem !== item)
-            : [...prevSelected, item]
-        );
+        setSelectedItems((prevSelected) => {
+          // Add item if not already selected, remove if it is selected
+          if (prevSelected.includes(item)) {
+            return prevSelected.filter((selectedItem) => selectedItem !== item);
+          } else {
+            return [...prevSelected, item];
+          }
+        });
       } else {
         // If multiSelect is false, allow only one selection
         setSelectedItems([item]);
